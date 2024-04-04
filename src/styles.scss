@@ -1,0 +1,339 @@
+/* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 0;
+    margin: 0;
+    background-color: black;
+    color: white;
+
+}
+
+h1,h2,h3,h4,h5,h6 {
+    padding: 0;
+    margin: 0;
+}
+p {
+    line-height: 1.6rem;
+}
+
+main {
+
+
+}
+
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 .5rem;
+}
+
+.container-md {
+    max-width: 640px;
+    margin: 100px auto;
+    padding: 0 .5rem;
+    position: relative;
+}
+
+.glow {
+    -webkit-box-shadow: 0px 8px 22px -16px rgba(147,230,127,1);
+    -moz-box-shadow: 0px 8px 22px -16px rgba(147,230,127,1);
+    box-shadow: 0px 8px 22px -16px rgba(147,230,127,1);
+}
+
+
+.flex {
+    display: flex;
+}
+.space-between {
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
+a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+
+ul.app-feed-list {
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+
+    li.app-feed-item {
+        background: linear-gradient(180deg,#151515,#090909 100%);
+        // background: #151515;
+        margin: 3rem 0;
+        border: 1px solid #222;
+        border-radius: 10px;
+    }
+
+   
+   .app-feed-item-body{
+    padding: 1rem;
+        p {
+           
+        }
+   }
+   .app-feed-item-comments {
+        padding:1rem;
+   }
+}
+
+.user-info{
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem;
+
+    .username-date {
+       flex-grow: 1;
+
+       a {
+           color: #93E67F;
+           font-size: 22px;
+           display: block;
+       }
+    }
+}
+
+.post-input-wrap {
+  
+    margin: 2rem auto;
+    background: #151515;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    border: 1px solid #222;
+    
+    input {
+        
+        padding: 1rem;
+        margin: 0;
+        background: #e7e7e7;
+        color: black;
+        border: none;
+        font-size: 16px;
+        outline: none;
+    
+    }
+
+    button {
+        background: #222;
+        color:#93E67F;
+        text-shadow:1px 1px black;
+        padding: 1rem;
+        border: none;
+        border-radius: 0 0 10px 10px;
+        text-transform: uppercase;
+        font-weight: bold;
+        cursor: pointer;
+        &:hover {
+            background: #444;
+        }
+    }
+}
+
+.control-btn {
+    background-color: transparent;
+    color: white;
+    border: 1px solid gray;
+    border-radius: 8px;
+    padding: .5rem;
+    
+    font-size: 16px;
+    transition: all ease-in-out 200ms;
+    cursor: pointer;
+
+    &:hover{
+        background-color: #444;
+    }
+
+    &.active {
+        color: black;
+        background-color: #a829c3;
+    }
+}
+
+
+
+.avatar{
+    display: inline-block;
+    border-radius: 50%;
+    overflow: hidden;
+  
+    &.sm {
+        width: 50px;
+        height: 50px;
+    }
+    &.lg {
+        width: 300px;
+    }
+}
+
+ .avatar img{
+    width:100%;
+    height:100%;
+    object-fit: cover;
+}
+
+ul.app-comment-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+        padding: 1rem;
+        border-radius: 0;
+        border-left: 5px solid gray;
+        margin: 1rem 0;
+
+        a {
+            padding-bottom: 0;
+            color:#93E67F;
+        }
+        p {
+            margin-bottom: 0;
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+    
+}
+
+.comment-input {
+    display: flex;
+    flex-direction: column;
+    h3{ 
+        color:  #93E67F;
+        padding: 1rem;
+    }
+    input {
+        padding: 1rem;
+        margin: 0;
+        background: #f2f2f2;
+        color: black;
+        border: none;
+        outline: none;
+        font-size: 16px;
+    }
+
+    button {
+        background: #222;
+        color:#93E67F;
+        text-shadow:1px 1px black;
+        padding: 1rem;
+        border: none;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+}
+
+.error {
+    color: red;
+    padding: .5rem;
+    display: block;
+    ul {
+        list-style: none;
+        margin: 0; 
+        padding: 0;
+    }
+}
+
+ul.feed-toggle {
+    list-style: none;
+    padding:0;
+    margin: 2rem 0;
+    display: flex;
+    gap: 1rem;
+    font-size: 22px;
+    li {
+        border-bottom: 5px solid;
+        padding: 1rem;
+    }
+
+    li.active {
+        border-bottom:5px solid #a829c3;
+    }
+    li.active a {
+        color: #a829c3;
+    }
+}
+
+.text-center {
+    text-align: center;
+}
+
+ul.pagination {
+    list-style: none;
+    margin: 2rem 0;
+    padding: 0;
+    display: flex;
+    gap: 2rem;
+    li button {
+        font-size: 22px;
+    }
+}
+.user-form {
+    margin: 2rem 0;
+    padding-top: 1rem;
+    h1{
+        text-transform: uppercase;
+        color:#93E67F;
+        text-shadow: 1px 1px black;
+    }
+    a {
+        color: #93E67F;
+    }
+}
+.user-form form {
+    display: flex;
+    flex-direction: column;
+    width: 330px; 
+    margin: 1rem auto;
+
+
+
+    :first-child {
+        border-radius: 10px 10px 0 0;
+    }
+
+    input {
+        padding: 1rem;
+        margin: 0;
+        background: #f2f2f2;
+        color: black;
+        border: none;
+        border-bottom: 1px solid #222;
+        font-size: 16px;
+        outline: none;
+    }
+
+    button {
+        background: #222;
+        color:#93E67F;
+        text-shadow:1px 1px black;
+        padding: 1rem;
+        border: none;
+        border-radius: 0 0 10px 10px;
+        text-transform: uppercase;
+        font-weight: bold;
+        cursor: pointer;
+        &:hover {
+            background: #444;
+        }
+    }
+}
+
+@media screen and (max-width: 736px){
+    .logo h1 {
+        display: none;
+    }
+}

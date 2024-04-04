@@ -1,0 +1,292 @@
+/* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 0;
+  margin: 0;
+  background-color: black;
+  color: white;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  padding: 0;
+  margin: 0;
+}
+
+p {
+  line-height: 1.6rem;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.container-md {
+  max-width: 640px;
+  margin: 100px auto;
+  position: relative;
+}
+
+.glow {
+  box-shadow: 0px 8px 22px -16px rgb(147, 230, 127);
+}
+
+.flex {
+  display: flex;
+}
+
+.space-between {
+  justify-content: space-between;
+  align-items: center;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+ul.app-feed-list {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+}
+ul.app-feed-list li.app-feed-item {
+  background: #151515;
+  margin: 3rem 0;
+  border: 1px solid #222;
+  border-radius: 10px;
+}
+ul.app-feed-list .app-feed-item-body {
+  padding: 1rem;
+}
+ul.app-feed-list .app-feed-item-comments {
+  padding: 1rem;
+}
+
+.user-info {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+}
+.user-info .username-date {
+  flex-grow: 1;
+}
+.user-info .username-date a {
+  color: #93E67F;
+  font-size: 22px;
+  display: block;
+}
+
+.post-input-wrap {
+  margin: 2rem auto;
+  background: #151515;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  border: 1px solid #222;
+}
+.post-input-wrap input {
+  padding: 1rem;
+  margin: 0;
+  background: #f2f2f2;
+  color: black;
+  border: none;
+  font-size: 16px;
+  outline: none;
+}
+.post-input-wrap button {
+  background: #222;
+  color: #93E67F;
+  text-shadow: 1px 1px black;
+  padding: 1rem;
+  border: none;
+  border-radius: 0 0 10px 10px;
+  text-transform: uppercase;
+  font-weight: bold;
+  cursor: pointer;
+}
+.post-input-wrap button:hover {
+  background: #444;
+}
+
+.control-btn {
+  background-color: transparent;
+  color: white;
+  border: 1px solid gray;
+  border-radius: 8px;
+  padding: 0.5rem;
+  font-size: 16px;
+  transition: all ease-in-out 200ms;
+  cursor: pointer;
+}
+.control-btn:hover {
+  background-color: #444;
+}
+.control-btn.active {
+  color: black;
+  background-color: #a829c3;
+}
+
+.avatar {
+  display: inline-block;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.avatar.sm {
+  width: 50px;
+  height: 50px;
+}
+.avatar.lg {
+  width: 300px;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+ul.app-comment-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+ul.app-comment-list li {
+  padding: 1rem;
+  border-radius: 0;
+  border-left: 5px solid gray;
+  margin: 1rem 0;
+}
+ul.app-comment-list li a {
+  padding-bottom: 0;
+  color: #93E67F;
+}
+ul.app-comment-list li p {
+  margin-bottom: 0;
+}
+ul.app-comment-list li:last-child {
+  margin-bottom: 0;
+}
+
+.comment-input {
+  display: flex;
+  flex-direction: column;
+}
+.comment-input h3 {
+  color: #93E67F;
+  padding: 1rem;
+}
+.comment-input input {
+  padding: 1rem;
+  margin: 0;
+  background: #f2f2f2;
+  color: black;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
+.comment-input button {
+  background: #222;
+  color: #93E67F;
+  text-shadow: 1px 1px black;
+  padding: 1rem;
+  border: none;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.error {
+  color: red;
+  padding: 0.5rem;
+  display: block;
+}
+.error ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul.feed-toggle {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0;
+  display: flex;
+  gap: 1rem;
+  font-size: 22px;
+}
+ul.feed-toggle li {
+  border-bottom: 5px solid;
+  padding: 1rem;
+}
+ul.feed-toggle li.active {
+  border-bottom: 5px solid #a829c3;
+}
+ul.feed-toggle li.active a {
+  color: #a829c3;
+}
+
+.text-center {
+  text-align: center;
+}
+
+ul.pagination {
+  list-style: none;
+  margin: 2rem 0;
+  padding: 0;
+  display: flex;
+  gap: 2rem;
+}
+ul.pagination li button {
+  font-size: 22px;
+}
+
+.user-form {
+  margin: 2rem 0;
+  padding-top: 1rem;
+}
+.user-form h1 {
+  text-transform: uppercase;
+  color: #93E67F;
+  text-shadow: 1px 1px black;
+}
+.user-form a {
+  color: #93E67F;
+}
+
+.user-form form {
+  display: flex;
+  flex-direction: column;
+  width: 330px;
+  margin: 1rem auto;
+}
+.user-form form :first-child {
+  border-radius: 10px 10px 0 0;
+}
+.user-form form input {
+  padding: 1rem;
+  margin: 0;
+  background: #f2f2f2;
+  color: black;
+  border: none;
+  border-bottom: 1px solid #222;
+  font-size: 16px;
+  outline: none;
+}
+.user-form form button {
+  background: #222;
+  color: #93E67F;
+  text-shadow: 1px 1px black;
+  padding: 1rem;
+  border: none;
+  border-radius: 0 0 10px 10px;
+  text-transform: uppercase;
+  font-weight: bold;
+  cursor: pointer;
+}
+.user-form form button:hover {
+  background: #444;
+}/*# sourceMappingURL=styles.css.map */
