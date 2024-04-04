@@ -36,7 +36,7 @@ import { PostInputComponent } from '@app/shared/ui/post-input/post-input.compone
       } 
       
       @if (postsStore.filter.path() === 'feed' && postsStore.posts().length === 0) {
-        <p>No posts yet! Use the Explore feed to find users!</p>
+        <p>No posts yet! Use the <span class="explore" (click)="onUpdatePath('')">Explore</span> feed to find users!</p>
       }
 
       <feed
@@ -53,7 +53,13 @@ import { PostInputComponent } from '@app/shared/ui/post-input/post-input.compone
       />
     </div>
   `,
-  styles: ``,
+  styles: `
+    .explore {
+      color: purple;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  `,
 })
 export default class ShellComponent implements OnInit {
   readonly postsStore = inject(PostsStore);

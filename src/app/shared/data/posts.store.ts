@@ -56,7 +56,7 @@ export const PostsStore = signalStore(
                             next: (res) => {
                                patchState(store, (state) => ({
                                     posts: [res.post, ...state.posts],
-                                    count: state.count++
+                                    count: ++state.count
                                }))
                             },
                             error: console.error
@@ -73,7 +73,7 @@ export const PostsStore = signalStore(
                             next: ({removed}) => {
                                patchState(store, (state) => ({
                                     posts: state.posts.filter((post) => post._id !== removed._id),
-                                    count: state.count--
+                                    count: --state.count
                                }))
                             },
                             error: console.error
