@@ -8,6 +8,7 @@ import { FeedTogglerComponent } from './ui/feed-toggle.component';
 import { StorageService } from '@app/shared/data/storage.service';
 import { AuthStore } from '@app/shared/data/auth.store';
 import { PostInputComponent } from '@app/shared/ui/post-input/post-input.component';
+import { SpinnerComponent } from '@app/shared/ui/spinner/spinner.component';
 
 @Component({
   selector: 'shell',
@@ -19,6 +20,7 @@ import { PostInputComponent } from '@app/shared/ui/post-input/post-input.compone
     FeedComponent,
     PaginationComponent,
     FeedTogglerComponent,
+    SpinnerComponent
   ],
   providers: [PostsStore],
   template: `
@@ -34,6 +36,7 @@ import { PostInputComponent } from '@app/shared/ui/post-input/post-input.compone
         [currentUser]="authStore.user()!"
         (submit)="postsStore.submitPost($event)" />
       } 
+      <spinner [loading]="postsStore.loading()" />
       
       @if (postsStore.filter.path() === 'feed' && postsStore.posts().length === 0) {
         <p>No posts yet! Use the <span class="explore" (click)="onUpdatePath('')">Explore</span> feed to find users!</p>

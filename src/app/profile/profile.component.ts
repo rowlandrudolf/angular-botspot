@@ -10,11 +10,12 @@ import {ProfileStore} from './data/profile.store';
 import { PostInputComponent } from '@app/shared/ui/post-input/post-input.component';
 import { Profile } from '@app/shared/interfaces';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { SpinnerComponent } from '@app/shared/ui/spinner/spinner.component';
 
 @Component({
   selector: 'profile',
   standalone: true,
-  imports: [FeedComponent, PostInputComponent ,PaginationComponent, FollowButtonComponent],
+  imports: [FeedComponent, PostInputComponent ,PaginationComponent, FollowButtonComponent, SpinnerComponent],
   providers: [PostsStore, ProfileStore, Location],
   template: `
     <button
@@ -24,24 +25,23 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
       &#8678; Back
     </button>
     <div class="profile-card glow">
-      <div class="avatar lg">
         <img
-          src="https://api.dicebear.com/7.x/bottts/svg?seed={{
-            profileStore.username()
-          }}"
+           [src]="imgPath()"
         />
-      </div>
-      <div class="profile-info lg">
+      <div class="profile-info">
         <h1>{{ profileStore.username() }}</h1>
         <div class="follow-info">
-          <div class="text-center">
-            {{ postsStore.count() }} <span>posts</span>
+          <div>
+            <span class="count">{{ postsStore.count() }}</span> 
+            <span class="label">posts</span>
           </div>
-          <div class="text-center">
-            {{ profileStore.followersCount() }} <span>followers</span>
+          <div>
+            <span class="count">{{ profileStore.followersCount() }}</span> 
+            <span class="label">followers</span>
           </div>
-          <div class="text-center">
-            {{ profileStore.followingCount() }} <span>following</span>
+          <div>
+            <span class="count">{{ profileStore.followingCount() }}</span> 
+            <span class="label">following</span>
           </div>
         </div>
         @if(authStore.user() && !isCurrentUser()) {
@@ -57,6 +57,7 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
         [currentUser]="authStore.user()!"
         (submit)="postsStore.submitPost($event)" />
     }
+    <spinner [loading]="postsStore.loading()"/>
     <feed
       [currentUser]="authStore.user()"
       [posts]="postsStore.posts()"
@@ -72,46 +73,6 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
     />
   `,
   styles: `
-  .control-btn {
-    color: #93E67F
-  }
-  .profile-card {
-      background: linear-gradient(180deg,#151515,#090909 100%);
-      border-radius: 10px;
-      border: 1px solid #222;
-      display: flex;
-      gap: 2rem;
-      padding: 2rem;
-      margin: 2rem 0 3rem 0;
-      align-items: stretch;
-  
-  }
-  .profile-info{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    flex-grow: 1;
-
-    h1 {
-      letter-spacing: 1px;
-      text-shadow: 1px 1px black;
-    }
-    .follow-info{
-      display: flex;
-      justify-content: space-around;
-      font-size: 22px;
-      margin: 2rem 0;
-      span {
-        display: block;
-        font-size: 14px !important;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-    }
-    button {
-      display:block;
-    }
-  }
   `,
 })
 export default class ProfileComponent implements OnInit {
@@ -122,6 +83,10 @@ export default class ProfileComponent implements OnInit {
 
   profile = input.required<Profile>();
   profile$ = toObservable<Profile>(this.profile);
+
+  imgPath = computed(() => {
+    return `https://api.dicebear.com/7.x/bottts/svg?seed=${this.profileStore.username()}`
+  })
 
   isCurrentUser = computed(() =>
     this.authStore.user()?._id === this.profileStore._id()

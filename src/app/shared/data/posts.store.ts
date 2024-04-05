@@ -4,7 +4,7 @@ import { patchState, signalStore, withMethods, withState } from "@ngrx/signals";
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
 
-import { concatMap, exhaustMap, pipe, switchMap } from "rxjs";
+import { concatMap, exhaustMap, pipe, switchMap, tap } from "rxjs";
 import { PostService } from "./post.service";
 
 type FilterType = {
@@ -15,6 +15,7 @@ type FilterType = {
 type PostsState = {
     posts: Post[];
     count: number;
+    loading: boolean,
     error: string | null;
     filter: FilterType
 }
@@ -22,6 +23,7 @@ type PostsState = {
 const initialState: PostsState = {
     posts: [],
     count: 0,
+    loading: false,
     error: null,
     filter: {
         path: '',
@@ -39,14 +41,17 @@ export const PostsStore = signalStore(
             patchState(store, (state) => ({ ...state, filter: { ...state.filter, skip }}))
         },
         loadPosts: rxMethod<FilterType>(
-            exhaustMap(({path, skip}) => {
-                return postService.getAll(path, skip).pipe(
-                    tapResponse({
-                        next: ({posts, count}) => patchState(store, { posts, count }),
-                        error: console.error
-                    })
-                )
-            })
+            pipe(
+                tap(() => patchState(store, { loading: true })),
+                exhaustMap(({path, skip}) => {
+                    return postService.getAll(path, skip).pipe(
+                        tapResponse({
+                            next: ({posts, count}) => patchState(store, { posts, count, loading: false }),
+                            error: (err) => console.error(err)
+                        })
+                    )
+                })
+            ),
         ),
         submitPost: rxMethod<Post['body']>(
             pipe(

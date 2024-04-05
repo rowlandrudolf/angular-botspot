@@ -38,7 +38,7 @@ import { AuthStore } from '@app/shared/data/auth.store';
   .app-header {
     background-color: black;
     border-bottom: 1px solid gray;
-    padding: 1rem 0;
+    padding: .5rem 0;
     font-size: 18px;
     position: fixed;
     top: 0;
@@ -57,7 +57,7 @@ import { AuthStore } from '@app/shared/data/auth.store';
   }
   nav ul {
     display: flex;
-    gap: 3rem;
+    gap: 1.5rem;
     list-style: none;
     padding: 0; 
     margin: 0;

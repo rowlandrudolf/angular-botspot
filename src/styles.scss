@@ -6,7 +6,6 @@ body {
     margin: 0;
     background-color: black;
     color: white;
-
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -16,12 +15,6 @@ h1,h2,h3,h4,h5,h6 {
 p {
     line-height: 1.6rem;
 }
-
-main {
-
-
-}
-
 
 .container {
     max-width: 960px;
@@ -76,9 +69,6 @@ ul.app-feed-list {
    
    .app-feed-item-body{
     padding: 1rem;
-        p {
-           
-        }
    }
    .app-feed-item-comments {
         padding:1rem;
@@ -162,11 +152,11 @@ ul.app-feed-list {
 
 
 
-.avatar{
+.avatar {
     display: inline-block;
-    border-radius: 50%;
+
     overflow: hidden;
-  
+    
     &.sm {
         width: 50px;
         height: 50px;
@@ -332,8 +322,61 @@ ul.pagination {
     }
 }
 
+.profile-card {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(180deg, #222, #000);
+    padding: 1.7rem;
+    margin: 1rem 0;
+    border: 1px solid #222;
+    border-radius: 8px;
+    img {
+        width: 160px
+    }
+
+    .profile-info {
+        width: 100%;
+        h1 {
+            
+        }
+
+        .follow-info{
+            margin: .5rem;
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+
+            .count {
+                font-size: 1.7rem;
+            }
+            .label {
+                margin: .5rem 0;
+                font-size: .8rem;
+                color: rgb(175, 175, 175);
+            }
+            div {
+
+                text-align: center;
+             
+                span {
+                    
+                    text-transform: uppercase;
+                    display: block;
+                }
+            }
+        }
+    }
+}
+
 @media screen and (max-width: 736px){
     .logo h1 {
         display: none;
+    }
+
+    .profile-card img {
+        width: 80px;
+    }
+
+    .label {
+        font-size: .6rem !important;
     }
 }
