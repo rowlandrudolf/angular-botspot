@@ -26,7 +26,7 @@ import { SpinnerComponent } from '@app/shared/ui/spinner/spinner.component';
     </button>
     <div class="profile-card glow">
         <img
-           [src]="imgPath()"
+           [src]="imgUrl()"
         />
       <div class="profile-info">
         <h1>{{ profileStore.username() }}</h1>
@@ -75,18 +75,14 @@ import { SpinnerComponent } from '@app/shared/ui/spinner/spinner.component';
   styles: `
   `,
 })
-export default class ProfileComponent implements OnInit {
+export default class ProfileComponent {
   location = inject(Location);
   authStore = inject(AuthStore);
   postsStore = inject(PostsStore);
-  profileStore = inject(ProfileStore)
+  profileStore = inject(ProfileStore);
+  activedRoute = inject(ActivatedRoute);
 
-  profile = input.required<Profile>();
-  profile$ = toObservable<Profile>(this.profile);
-
-  imgPath = computed(() => {
-    return `https://api.dicebear.com/7.x/bottts/svg?seed=${this.profileStore.username()}`
-  })
+  imgUrl = computed(() => `https://api.dicebear.com/7.x/bottts/svg?seed=${this.profileStore.username()}`)
 
   isCurrentUser = computed(() =>
     this.authStore.user()?._id === this.profileStore._id()
@@ -94,14 +90,11 @@ export default class ProfileComponent implements OnInit {
 
   constructor(){
     const filter = this.postsStore.filter
-    this.profile$.pipe(takeUntilDestroyed()).subscribe(({username}) => {
-      this.postsStore.setPath(username);
+    this.activedRoute.data.pipe(takeUntilDestroyed()).subscribe(({profile}) => {
+      this.profileStore.setProfile(profile);
+      this.postsStore.setPath(profile.username);
       this.postsStore.loadPosts(filter);
-    })
-  }
-
-  ngOnInit(): void {
-    this.profileStore.setProfile(this.profile())
+    });
   }
 
 }

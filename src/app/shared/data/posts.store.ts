@@ -42,7 +42,7 @@ export const PostsStore = signalStore(
         },
         loadPosts: rxMethod<FilterType>(
             pipe(
-                tap(() => patchState(store, { loading: true })),
+                tap(() => patchState(store, { posts: [], loading: true })),
                 exhaustMap(({path, skip}) => {
                     return postService.getAll(path, skip).pipe(
                         tapResponse({
