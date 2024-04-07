@@ -58,7 +58,7 @@ import { SpinnerComponent } from '@app/shared/ui/spinner/spinner.component';
   `,
   styles: `
     .explore {
-      color: purple;
+      color: rgb(127,230,147);
       text-decoration: underline;
       cursor: pointer;
     }

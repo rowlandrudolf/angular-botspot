@@ -146,7 +146,7 @@ ul.app-feed-list {
 
     &.active {
         color: black;
-        background-color: #a829c3;
+        background-color: rgb(147,230,127);
     }
 }
 
@@ -245,15 +245,18 @@ ul.feed-toggle {
     gap: 1rem;
     font-size: 22px;
     li {
-        border-bottom: 5px solid;
+        border-bottom: 5px solid darkgray;
         padding: 1rem;
+    }
+    li a {
+        color: darkgray;
     }
 
     li.active {
-        border-bottom:5px solid #a829c3;
+        border-bottom:5px solid rgb(147,230,127);
     }
     li.active a {
-        color: #a829c3;
+        color: rgb(147,230,127);
     }
 }
 
