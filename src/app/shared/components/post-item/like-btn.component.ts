@@ -2,7 +2,7 @@ import { NgClass, NgStyle } from "@angular/common";
 import { Component, input, model, output } from "@angular/core";
 
 @Component({
-    selector: 'like-button',
+    selector: 'like-btn',
     standalone: true,
     imports: [
         NgClass
@@ -10,17 +10,13 @@ import { Component, input, model, output } from "@angular/core";
     template: `
     <button 
         class="control-btn"
-        (click)="toggle.emit()" 
+        (click)="liked.set(!liked())" 
         [ngClass]="{'active': liked() }">
         {{ likesCount() }} 👍 
     </button>
     `,
-    styles: `
-
-    `
 })
-export class LikeButtonComponent {
-    liked = input.required<boolean>()
+export class LikeBtnComponent {
+    liked = model.required<boolean>()
     likesCount = input.required<number>()
-    toggle = output<void>();
 }

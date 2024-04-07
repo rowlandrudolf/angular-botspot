@@ -59,10 +59,8 @@ import { SpinnerComponent } from '@app/shared/ui/spinner/spinner.component';
     }
     <spinner [loading]="postsStore.loading()"/>
     <feed
-      [currentUser]="authStore.user()"
       [posts]="postsStore.posts()"
       [count]="postsStore.count()"
-      (toggleLike)="postsStore.toggleLike($event)"
       (removePost)="postsStore.removePost($event)"
     />
 

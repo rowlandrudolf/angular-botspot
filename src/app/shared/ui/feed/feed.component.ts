@@ -8,66 +8,25 @@ import { LikeButtonComponent } from './like-button.component';
 import { PluralPipe } from '@app/shared/utils/plural.pipe';
 import { postAddState } from '../animations';
 import { CommentSectionComponent } from '@app/shared/components/comment-section/comment-section.component';
+import { PostInputComponent } from '../post-input/post-input.component';
+import PostItemComponent from '@app/shared/components/post-item/post-item.component';
 
 @Component({
   selector: 'feed',
   standalone: true,
-  imports: [JsonPipe, DatePipe, FormsModule, RouterLink, LikeButtonComponent, PluralPipe, CommentSectionComponent],
+  imports: [ JsonPipe, DatePipe, FormsModule, RouterLink,PluralPipe, PostItemComponent ],
   providers: [],
   template: `
       <ul class="app-feed-list">
       @for(post of posts(); track post._id) {
-      <li class="app-feed-item" @postAddTrigger>
-        <div class="user-info">
-          <span class="avatar sm"> 
-            <img src="https://api.dicebear.com/7.x/bottts/svg?seed={{post.author.username}}"/>
-          </span>
-          <div class="username-date">
-            <a [routerLink]="['/profiles', post.author.username]">{{
-              post.author.username
-            }}</a>
-            <small>{{ post.createdAt | date : 'short' }}</small>
-          </div>
-          <div class="controls">
-            @if(currentUser() !== null && currentUser()?._id === post.author._id){
-              <button class="control-btn" (click)="removePost.emit(post._id)"> ❌ </button>
-            } 
-            @if(currentUser() !== null ){
-              <like-button
-                [likesCount]="post.likesCount"
-                [liked]="post.liked"
-                (toggle)="toggleLike.emit(post)"
-              />
-            } @else {
-            <button class="control-btn" [disabled]="true">
-              👍 {{ post.likesCount}} {{ 'like' | plural: post.likesCount }} 
-            </button>
-            }
-          </div>
-        </div>
-        <div class="app-feed-item-body">
-            <p>{{ post.body }}</p>
-        </div>
-        <comment-section [postId]="post._id" />
-      </li>
+        <post-item [post]="post" (remove)="removePost.emit($event)"/>
       }
     </ul>
       
   `,
-  styles: `
-  .controls {
-    display: flex;
-    gap: .5rem;
-  }
-  `,
-  animations: [
-    postAddState
-  ]
 })
 export default class FeedComponent {
-  currentUser = input<AuthUser | null>(null)
   posts = input<Post[]>([])
   count = input<number>(0)
-  toggleLike = output<Post>()
   removePost = output<Post['_id']>()
 }
