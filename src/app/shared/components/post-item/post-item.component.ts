@@ -2,7 +2,7 @@ import { Component, OnInit, Signal, inject, input, output, signal } from "@angul
 import { takeUntilDestroyed, toObservable } from "@angular/core/rxjs-interop";
 import { PostService } from "@app/shared/data/post.service";
 import { Post, User } from "@app/shared/interfaces";
-import { skip, switchMap, takeUntil, tap } from "rxjs";
+import { skip, switchMap } from "rxjs";
 import { LikeBtnComponent } from "./like-btn.component";
 import { RouterLink } from "@angular/router";
 import { PluralPipe } from "@app/shared/utils/plural.pipe";
