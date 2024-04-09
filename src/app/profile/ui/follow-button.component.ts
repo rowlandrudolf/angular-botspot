@@ -8,7 +8,7 @@ import { Component, EventEmitter, Input, Output, Signal, computed, input, output
     template: `
         <button 
           class="control-btn"
-          (click)="toggleFollow.emit('')"
+          (click)="toggleFollow.emit(!this.following())"
           [ngClass]="{'active': this.following()}">
             {{label()}}
         </button>
@@ -22,6 +22,6 @@ import { Component, EventEmitter, Input, Output, Signal, computed, input, output
 })
 export class FollowButtonComponent {
     following = input.required<boolean>();
-    toggleFollow = output<string>();
+    toggleFollow = output<boolean>();
     label = computed(() => this.following() ? 'Unfollow' : 'Follow')
 }

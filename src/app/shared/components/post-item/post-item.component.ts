@@ -78,6 +78,7 @@ export default class PostItemComponent implements OnInit {
     likesCount = signal<number>(0)
 
     ngOnInit(): void {
+      // comment.
         this.liked.set(this.post().liked)
         this.likesCount.set(this.post().likesCount)
     }

@@ -32,8 +32,14 @@ export class ProfileService {
             catchError(this.handleError)
         )
     }
+
+    toggleFollow(follow: boolean, username: string): Observable<Profile>{
+        return follow 
+            ? this.followUser(username)
+            : this.unfollowUser(username)
+    }
     
-    followUser(username: string): Observable<Profile>{
+    private followUser(username: string): Observable<Profile>{
         return this.http.post<ProfileResponseInterface>(`${this.profileUrl}/${username}/follow`, {})
           .pipe(
             map(res => res.profile),
@@ -41,7 +47,7 @@ export class ProfileService {
          )
     }
 
-    unfollowUser(username: string): Observable<Profile>{
+    private unfollowUser(username: string): Observable<Profile>{
         return this.http.delete<{removed: Profile}>(`${this.profileUrl}/${username}/follow`, {})
           .pipe(
             map(res => res.removed),
