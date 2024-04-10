@@ -7,6 +7,7 @@ import { CommentService } from "./data/comment.service";
 import { CommentForm } from "./ui/comment-input.component";
 import { PluralPipe } from "@app/shared/utils/plural.pipe";
 import { showCommentFormState } from "@app/shared/ui/animations";
+import { Post } from "@app/shared/interfaces";
 
 @Component({
   selector: 'comment-section',
@@ -50,7 +51,7 @@ import { showCommentFormState } from "@app/shared/ui/animations";
   ],
 })
 export class CommentSectionComponent implements OnInit {
-  postId = input.required<string>();
+  postId = input.required<Post['_id']>();
   commentsStore = inject(CommentsStore);
   authStore = inject(AuthStore);
   showForm = signal<boolean>(false);

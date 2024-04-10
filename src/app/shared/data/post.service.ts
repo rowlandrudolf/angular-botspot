@@ -1,12 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Post } from '../interfaces';
 import { environment } from '../../../environments/environment';
 
 export interface PostsResponseInterface {
   posts: Post[],
   count: number
+}
+
+interface PostResponseInterface {
+  post: Post
 }
 
 @Injectable({
@@ -26,23 +30,25 @@ export class PostService {
   }
 
   create(body: Post['body']) {
-      return this.http.post<{post: Post}>(this.postsUrl, { post: { body } });
+      return this.http.post<PostResponseInterface>(this.postsUrl, { post: { body } });
   }
 
   remove(postId: Post['_id']){
       return this.http.delete<{removed: Post}>(`${this.postsUrl}/${postId}`);
   }
 
-  toggleLike(post: Post){
-    return post.liked ? this.unlike(post._id) : this.like(post._id)
+  toggleLike(like: boolean, postId: Post['_id']): Observable<Post>{
+    return like ? this.like(postId) : this.unlike(postId)
   }
 
-  like(postId: string){
-      return this.http.post<{post: Post}>(`${this.postsUrl}/${postId}/like`, {});
+  like(postId: string):Observable<Post>{
+      return this.http.post<PostResponseInterface>(`${this.postsUrl}/${postId}/like`, {})
+        .pipe(map(({post}) => post ));
   }
 
-  unlike(postId: string){
-      return this.http.delete<{post: Post}>(`${this.postsUrl}/${postId}/like`);
+  unlike(postId: string):Observable<Post>{
+      return this.http.delete<PostResponseInterface>(`${this.postsUrl}/${postId}/like`)
+      .pipe(map(({post}) => post ))
   }
 
 }

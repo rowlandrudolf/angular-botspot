@@ -86,20 +86,6 @@ export const PostsStore = signalStore(
                     )
                 })
             )
-        ),
-        toggleLike: rxMethod<Post>(
-            pipe(
-                concatMap((post) => {
-                    return postService.toggleLike(post).pipe(
-                        tapResponse({
-                            next: ({post}) => patchState(store, {
-                                posts: store.posts().map((p) =>  p._id === post._id ? post : p )
-                            }), 
-                            error: console.error
-                        })
-                    )
-                })
-            )
         )
     }))
 )

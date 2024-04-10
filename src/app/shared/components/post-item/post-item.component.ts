@@ -1,8 +1,8 @@
-import { Component, OnInit, Signal, inject, input, output, signal } from "@angular/core";
+import { Component, OnInit, Signal, computed, inject, input, output, signal } from "@angular/core";
 import { takeUntilDestroyed, toObservable } from "@angular/core/rxjs-interop";
 import { PostService } from "@app/shared/data/post.service";
 import { Post, User } from "@app/shared/interfaces";
-import { skip, switchMap } from "rxjs";
+import { Subject, skip, switchMap, tap } from "rxjs";
 import { LikeBtnComponent } from "./like-btn.component";
 import { RouterLink } from "@angular/router";
 import { PluralPipe } from "@app/shared/utils/plural.pipe";
@@ -10,6 +10,7 @@ import { CommentSectionComponent } from "@app/shared/components/comment-section/
 import { DatePipe } from "@angular/common";
 import { AuthStore } from "@app/shared/data/auth.store";
 import { postAddState } from "../../ui/animations";
+import { signalState } from "@ngrx/signals";
 
 @Component({
     selector: 'post-item',
@@ -42,7 +43,8 @@ import { postAddState } from "../../ui/animations";
             @if(authStore.user() !== null ){
               <like-btn 
                 [likesCount]="likesCount()"
-                [(liked)]="liked"
+                [liked]="liked()"
+                (likedChange)="like$.next($event)"
               />
             } @else {
             <button class="control-btn" [disabled]="true">
@@ -72,31 +74,36 @@ export default class PostItemComponent implements OnInit {
     postService = inject(PostService)
 
     post = input.required<Post>()
-    remove = output<string>();
-    
-    liked = signal<boolean>(false)
-    likesCount = signal<number>(0)
+    remove = output<Post['_id']>();
 
-    ngOnInit(): void {
-      // comment.
-        this.liked.set(this.post().liked)
-        this.likesCount.set(this.post().likesCount)
-    }
+    private state = signal({
+      liked: false,
+      likesCount: 0
+    })
 
+    liked = computed(() => this.state().liked)
+    likesCount = computed(() => this.state().likesCount)
+
+    like$ = new Subject<boolean>()
 
     constructor(){
-        toObservable(this.liked).pipe(
-            skip(1),
-            switchMap((like) =>
-                like 
-                    ? this.postService.like(this.post()._id) 
-                    : this.postService.unlike(this.post()._id)
-            ),
-            takeUntilDestroyed()
-        ).subscribe(({post}) => 
-            this.likesCount.set(post.likesCount)
-        )
+      this.like$.pipe(
+        switchMap((like) =>
+          this.postService.toggleLike(like, this.post()._id)
+        ),
+        takeUntilDestroyed()
+      ).subscribe(({liked, likesCount}) => 
+        this.state.update((_) => ({
+          likesCount,
+          liked
+        }))
+      )
     }
 
-
+    ngOnInit(): void {
+      this.state.update((_) => ({
+        liked: this.post().liked,
+        likesCount: this.post().likesCount,
+      }))
+    }
 }
