@@ -1,5 +1,4 @@
-import { Component, computed, inject, input} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, computed, inject, input, signal} from '@angular/core';
 import FeedComponent from '@app/shared/ui/feed/feed.component';
 import { PostsStore } from '@app/shared/data/posts.store';
 import { PaginationComponent } from '@app/shared/ui/pagination/pagination.component';
@@ -7,13 +6,10 @@ import { Location } from '@angular/common';
 import { AuthStore } from '@app/shared/data/auth.store';
 import { FollowButtonComponent } from './ui/follow-button.component';
 import { PostInputComponent } from '@app/shared/ui/post-input/post-input.component';
-import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SpinnerComponent } from '@app/shared/ui/spinner/spinner.component';
-import { exhaustMap, filter, map, pipe, switchMap, tap } from 'rxjs';
+import { Subject, switchMap } from 'rxjs';
 import { ProfileService } from './data/profile.service';
-import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { tapResponse } from '@ngrx/operators';
-import { patchState, signalState } from '@ngrx/signals';
 import { Profile } from '@app/shared/interfaces';
 
 @Component({
@@ -37,9 +33,9 @@ import { Profile } from '@app/shared/interfaces';
    
    
       <div class="profile-card glow">
-          <img src="https://api.dicebear.com/7.x/bottts/svg?seed={{profile()?.username}}"/>
+          <img src="https://api.dicebear.com/7.x/bottts/svg?seed={{profile().username}}"/>
         <div class="profile-info">
-          <h1>{{ profile()?.username }}</h1>
+          <h1>{{ profile().username }}</h1>
           <div class="follow-info">
             <div>
               <span class="count">{{ postsStore.count() }}</span> 
@@ -50,7 +46,7 @@ import { Profile } from '@app/shared/interfaces';
               <span class="label">followers</span>
             </div>
             <div>
-              <span class="count">{{ profile()?.followingCount }}</span> 
+              <span class="count">{{ profile().followingCount }}</span> 
               <span class="label">following</span>
             </div>
           </div>
@@ -58,7 +54,7 @@ import { Profile } from '@app/shared/interfaces';
           @if(authStore.user() && !isCurrentUser()) {
             <follow-button
               [following]="following()"
-              (toggleFollow)="toggleFollow($event)"
+              (followingChange)="follow$.next($event)"
             />
           }
         </div>
@@ -85,53 +81,50 @@ import { Profile } from '@app/shared/interfaces';
     />
   `,
 })
-export default class ProfileComponent {
+export default class ProfileComponent implements OnInit {
   location = inject(Location)
-  activedRoute = inject(ActivatedRoute)
   authStore = inject(AuthStore)
   profileService = inject(ProfileService)
   postsStore = inject(PostsStore)
 
+  profile = input.required<Profile>();
 
-  private readonly state = signalState({
+  private readonly state = signal({
     following: false,
     followersCount: 0
   })
 
-  readonly following = this.state.following
-  readonly followersCount =  this.state.followersCount
-
-  profile = toSignal<Profile>(
-    this.activedRoute.data
-      .pipe(
-        map(({profile}) => profile),
-        tap(({username, following, followersCount}) => {
-          this.postsStore.setPath(username);
-          this.postsStore.loadPosts(this.postsStore.filter)
-          patchState(this.state, {
-            following,
-            followersCount
-          })
-        })
-      )
-  )
+  following = computed(() => this.state().following)
+  followersCount = computed(() => this.state().followersCount)
 
   isCurrentUser = computed(() =>
     this.authStore.user()?._id === this.profile()?._id
   );
 
-  toggleFollow = rxMethod<boolean>(
-    pipe(
-      exhaustMap((following) => 
-        this.profileService.toggleFollow(following, this.profile()!.username)
+  follow$ = new Subject<boolean>()
+
+  constructor(){
+    this.follow$.pipe(
+      switchMap((follow) =>
+        this.profileService.toggleFollow(follow, this.profile().username)
       ),
-      tapResponse({
-        next: ({following, followersCount}) => 
-          patchState(this.state, ({following, followersCount})
-        ),
-        error: console.error
-      })
+      takeUntilDestroyed()
+    ).subscribe(({following, followersCount}) => 
+      this.state.update((_) => ({
+        following,
+        followersCount
+      }))
     )
-  )
-  
+  }
+
+  ngOnInit(): void {
+    this.postsStore.setPath(this.profile().username)
+    this.postsStore.loadPosts(this.postsStore.filter)
+    this.state.update((_) => ({
+      following: this.profile().following,
+      followersCount: this.profile().followersCount
+    }))
+  }
+
+
 }

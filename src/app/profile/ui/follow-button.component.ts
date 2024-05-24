@@ -1,5 +1,5 @@
 import { NgClass } from "@angular/common";
-import { Component, EventEmitter, Input, Output, Signal, computed, input, output, signal } from "@angular/core";
+import { Component, EventEmitter, Input, Output, Signal, computed, input, model, output, signal } from "@angular/core";
 
 @Component({
     selector: 'follow-button',
@@ -8,7 +8,7 @@ import { Component, EventEmitter, Input, Output, Signal, computed, input, output
     template: `
         <button 
           class="control-btn"
-          (click)="toggleFollow.emit(!this.following())"
+          (click)="this.following.set(!this.following())"
           [ngClass]="{'active': this.following()}">
             {{label()}}
         </button>
@@ -21,7 +21,6 @@ import { Component, EventEmitter, Input, Output, Signal, computed, input, output
     `
 })
 export class FollowButtonComponent {
-    following = input.required<boolean>();
-    toggleFollow = output<boolean>();
+    following = model.required<boolean>();
     label = computed(() => this.following() ? 'Unfollow' : 'Follow')
 }
